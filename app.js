@@ -5,7 +5,7 @@ const app = new express();
 const crede = require('./src/model/UserData');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-app.use(express.static('./dist/Library'));
+app.use(express.static('./dist/project'));
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -116,7 +116,7 @@ app.delete('/api/remove/:id', (req, res) => {
 });
 
 app.get('/*', function(req, res) {
-	res.sendFile(path.join(__dirname + '/dist//Library/index.html'));
+	res.sendFile(path.join(__dirname + '/dist//project/index.html'));
 });
 
 app.listen(process.env.PORT || 3000, () => {
