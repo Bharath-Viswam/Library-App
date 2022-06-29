@@ -83,7 +83,7 @@ app.delete('/api/remove/:id', (req, res) => {
 		res.send();
 	});
 });
-app.get('/api/Abook/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
 	const id = req.params.id;
 	Booksdata.findOne({ _id: id }).then((product) => {
 		res.send(product);
