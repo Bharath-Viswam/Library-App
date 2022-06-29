@@ -1,10 +1,12 @@
 const express = require('express');
+const bodyparser = require('body-parser');
 const cors = require('cors');
 const Booksdata = require('./src/model/BooksData');
 const app = new express();
 const crede = require('./src/model/UserData');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+app.use(bodyparser.json());
 app.use(express.static(`./dist/project`));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
