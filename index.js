@@ -5,7 +5,7 @@ const app = new express();
 const crede = require('./src/model/UserData');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-app.use(express.static('./dist/project'));
+app.use(express.static(`./dist/project`));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -114,7 +114,7 @@ app.delete('/api/remove/:id', (req, res) => {
 	});
 });
 app.get('/*', function(req, res) {
-	res.sendFile(path.join(__dirname + '/dist//project/index.html'));
+	res.sendFile(path.join(__dirname + `/dist//project/index.html`));
 });
 app.listen(process.env.PORT || 3000, () => {
 	console.log('server up in port 3000');
