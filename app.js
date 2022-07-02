@@ -77,7 +77,7 @@ app.post('/api/insert', function(req, res) {
 });
 app.get('/api/:id', (req, res) => {
 	const id = req.params.id;
-	Booksdata.findOne({ _id: id }).then((product) => {
+	Booksdata.findOne(id).then((product) => {
 		res.send(product);
 	});
 });
@@ -91,7 +91,7 @@ app.put('/api/update', (req, res) => {
 		(image = req.body.image),
 		(rating = req.body.rating);
 	Booksdata.findByIdAndUpdate(
-		{ _id: id },
+		id,
 		{
 			$set: {
 				productId: productId,
@@ -109,7 +109,7 @@ app.put('/api/update', (req, res) => {
 
 app.delete('/api/remove/:id', (req, res) => {
 	id = req.params.id;
-	Booksdata.findByIdAndDelete({ _id: id }).then(() => {
+	Booksdata.findByIdAndDelete(id).then(() => {
 		console.log('success');
 		res.send();
 	});
