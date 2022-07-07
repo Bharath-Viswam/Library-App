@@ -114,6 +114,6 @@ app.get('/*', function(req, res) {
 	res.sendFile(path.join(__dirname + './dist/project/index.html'));
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.log('server up in port 3000');
 });
