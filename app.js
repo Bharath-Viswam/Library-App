@@ -76,7 +76,7 @@ app.post('/insert', function(req, res) {
 });
 app.get('/:id', (req, res) => {
 	const id = req.params.id;
-	Booksdata.findOne({ _id: id }).then((product) => {
+	Booksdata.findOne(id).then((product) => {
 		res.send(product);
 	});
 });
