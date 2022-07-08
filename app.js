@@ -9,7 +9,7 @@ app.use(express.static('./dist/project'));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.post('/signup', (req, res) => {
+app.post('/api/signup', (req, res) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Method:GET,POST,PUT,DELETE');
 	var userCred = {
@@ -21,7 +21,7 @@ app.post('/signup', (req, res) => {
 	res.send();
 });
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Method:GET,POST,PUT,DELETE');
 	crede
@@ -43,7 +43,7 @@ app.post('/login', (req, res) => {
 			}
 		});
 });
-app.get('/products', function(req, res) {
+app.get('/api/products', function(req, res) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	Booksdata.find().then(function(products) {
@@ -51,7 +51,7 @@ app.get('/products', function(req, res) {
 	});
 });
 
-app.post('/insert', function(req, res) {
+app.post('/api/insert', function(req, res) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	console.log(req.body);
@@ -74,13 +74,13 @@ app.post('/insert', function(req, res) {
 	var books = new Booksdata(book);
 	books.save();
 });
-app.get('/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
 	const id = req.params.id;
 	Booksdata.findOne({ _id: id }).then((product) => {
 		res.send(product);
 	});
 });
-app.put('/update', (req, res) => {
+app.put('/api/update', (req, res) => {
 	console.log(req.body);
 	(id = req.body._id),
 		(productId = req.body.productId),
@@ -103,7 +103,7 @@ app.put('/update', (req, res) => {
 	});
 });
 
-app.delete('/remove/:id', (req, res) => {
+app.delete('/api/remove/:id', (req, res) => {
 	id = req.params.id;
 	Booksdata.findByIdAndDelete(id).then(() => {
 		console.log('success');
