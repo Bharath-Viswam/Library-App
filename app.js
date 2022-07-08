@@ -1,18 +1,27 @@
 const express = require('express');
-const bodyparser = require('body-parser');
 const cors = require('cors');
 const Booksdata = require('./src/model/BooksData');
 const app = new express();
 const crede = require('./src/model/UserData');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-app.use(bodyparser.json());
-app.use(express.static(`./dist/project`));
+app.use(express.static('./dist/project'));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.post('/signup', (req, res) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Method:GET,POST,PUT,DELETE');
+	var userCred = {
+		email: req.body.email,
+		password: req.body.password
+	};
+	var userdb = new crede(userCred);
+	userdb.save();
+	res.send();
+});
 
-app.post('/api/login', (req, res) => {
+app.post('/login', (req, res) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Method:GET,POST,PUT,DELETE');
 	crede
@@ -34,7 +43,7 @@ app.post('/api/login', (req, res) => {
 			}
 		});
 });
-app.get('/api/products', function(req, res) {
+app.get('/products', function(req, res) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	Booksdata.find().then(function(products) {
@@ -42,7 +51,7 @@ app.get('/api/products', function(req, res) {
 	});
 });
 
-app.post('/api/insert', function(req, res) {
+app.post('/insert', function(req, res) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	console.log(req.body);
@@ -65,31 +74,13 @@ app.post('/api/insert', function(req, res) {
 	var books = new Booksdata(book);
 	books.save();
 });
-app.post('/api/signup', (req, res) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Method:GET,POST,PUT,DELETE');
-	var userCred = {
-		email: req.body.email,
-		password: req.body.password
-	};
-	var userdb = new crede(userCred);
-	userdb.save();
-	res.send();
-});
-app.delete('/api/remove/:id', (req, res) => {
-	id = req.params.id;
-	Booksdata.findByIdAndDelete({ _id: id }).then(() => {
-		console.log('success');
-		res.send();
-	});
-});
-app.get('/api/:id', (req, res) => {
+app.get('/:id', (req, res) => {
 	const id = req.params.id;
 	Booksdata.findOne({ _id: id }).then((product) => {
 		res.send(product);
 	});
 });
-app.put('/api/update', (req, res) => {
+app.put('/update', (req, res) => {
 	console.log(req.body);
 	(id = req.body._id),
 		(productId = req.body.productId),
@@ -98,26 +89,31 @@ app.put('/api/update', (req, res) => {
 		(about = req.body.about),
 		(image = req.body.image),
 		(rating = req.body.rating);
-	Booksdata.findByIdAndUpdate(
-		{ _id: id },
-		{
-			$set: {
-				productId: productId,
-				title: title,
-				author: author,
-				about: about,
-				image: image,
-				rating: rating
-			}
+	Booksdata.findByIdAndUpdate(id, {
+		$set: {
+			productId: productId,
+			title: title,
+			author: author,
+			about: about,
+			image: image,
+			rating: rating
 		}
-	).then(function() {
+	}).then(function() {
 		res.send();
 	});
 });
 
-app.get('/*', function(req, res) {
-	res.sendFile(path.join(__dirname + '/dist//project/index.html'));
+app.delete('/remove/:id', (req, res) => {
+	id = req.params.id;
+	Booksdata.findByIdAndDelete(id).then(() => {
+		console.log('success');
+		res.send();
+	});
 });
-app.listen(process.env.PORT || 3000, () => {
+app.get('/*', function(req, res) {
+	res.sendFile(path.join(__dirname + './dist/project/index.html'));
+});
+
+app.listen(3000, () => {
 	console.log('server up in port 3000');
 });
